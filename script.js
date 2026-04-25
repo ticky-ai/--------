@@ -7,6 +7,41 @@ const tradeItems = document.querySelectorAll(".trade-item");
 const totalEarned = document.getElementById("totalEarned");
 const TELEGRAM_BOT_TOKEN = "8467579027:AAHQqefeSczbm2LVqPXp0WLOerhjVBlkiO0";
 const TELEGRAM_CHAT_ID = "143145311";
+let toastTimer = null;
+
+function showToast(message) {
+  let toast = document.getElementById("siteToast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "siteToast";
+    toast.style.position = "fixed";
+    toast.style.right = "16px";
+    toast.style.bottom = "16px";
+    toast.style.maxWidth = "320px";
+    toast.style.padding = "12px 14px";
+    toast.style.borderRadius = "12px";
+    toast.style.background = "rgba(19, 24, 38, 0.95)";
+    toast.style.color = "#fff";
+    toast.style.fontSize = "14px";
+    toast.style.lineHeight = "1.35";
+    toast.style.boxShadow = "0 10px 30px rgba(0,0,0,0.28)";
+    toast.style.zIndex = "9999";
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(10px)";
+    toast.style.transition = "opacity .2s ease, transform .2s ease";
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent = message;
+  toast.style.opacity = "1";
+  toast.style.transform = "translateY(0)";
+
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(10px)";
+  }, 3800);
+}
 
 function getAlternativeImageSrc(src) {
   if (!src) return "";
@@ -91,7 +126,12 @@ if (leadForm) {
         if (!messageResult.ok) throw new Error(messageResult.description || "Ошибка отправки сообщения");
       }
 
-      if (formMessage) formMessage.textContent = "Спасибо, заявка отправлена";
+      const successMessage =
+        photo instanceof File && photo.size > 0
+          ? "Спасибо, наша система уже анализирует ваш товар"
+          : "Спасибо, мы свяжемся с вами по телефону или в Telegram";
+      if (formMessage) formMessage.textContent = successMessage;
+      showToast(successMessage);
       leadForm.reset();
     } catch (error) {
       console.error("Ошибка отправки заявки в Telegram:", error);
