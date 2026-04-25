@@ -6,6 +6,31 @@ const flyContainer = document.querySelector(".bg-fly");
 const tradeItems = document.querySelectorAll(".trade-item");
 const totalEarned = document.getElementById("totalEarned");
 
+function getAlternativeImageSrc(src) {
+  if (!src) return "";
+  if (src.includes("/assets/")) return src.replace("/assets/", "/");
+  if (src.includes("./assets/")) return src.replace("./assets/", "./");
+  if (src.startsWith("./")) return src.replace("./", "./assets/");
+  if (src.startsWith("/")) return src.replace("/", "/assets/");
+  return `./assets/${src}`;
+}
+
+function enableImageFallback() {
+  const images = document.querySelectorAll("img");
+  images.forEach((img) => {
+    img.addEventListener("error", () => {
+      const currentSrc = img.getAttribute("src");
+      const triedSrc = img.dataset.fallbackSrc;
+      const nextSrc = getAlternativeImageSrc(currentSrc || "");
+      if (!nextSrc || nextSrc === currentSrc || triedSrc === nextSrc) return;
+      img.dataset.fallbackSrc = nextSrc;
+      img.src = nextSrc;
+    });
+  });
+}
+
+enableImageFallback();
+
 if (year) {
   year.textContent = String(new Date().getFullYear());
 }
