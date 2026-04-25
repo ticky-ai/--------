@@ -1,7 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <rect width="64" height="64" rx="16" fill="#5D5AF4" />
-  <path
+  <text
+    x="32"
+    y="46"
+    text-anchor="middle"
+    font-size="42"
+    font-family="'Arial','Helvetica','DejaVu Sans',sans-serif"
+    font-weight="800"
     fill="#FFFFFF"
-    d="M16 16H37.5C44.4 16 49 20.4 49 27.1C49 32.5 45.9 36.1 40.8 37.7L47 48H37.7L32.5 39.3H26V48H16V16ZM26 24.2V31.1H36.4C38.8 31.1 40.3 29.8 40.3 27.6C40.3 25.5 38.8 24.2 36.4 24.2H26Z"
-  />
+  >
+    Я
+  </text>
 </svg>
